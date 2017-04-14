@@ -21,15 +21,11 @@ const form2obj = (form, options) => {
     }
   })
 
-  console.log(JSON.stringify(test, null, 4))
-
   function setValue(element, elementIdx) {
 
     const { name, type, value, checked } = element
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
-
-    console.log(fieldName)
 
     if (_.includes(['text', 'textarea', 'email', 'url', 'search', 'hidden'], type)) {
       value && _.set(test, fieldName, _.trim(value))

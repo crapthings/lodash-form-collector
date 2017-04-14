@@ -10,7 +10,7 @@ let template = {}
 const onSubmit = evt => {
   evt.preventDefault()
   const data = form2obj(evt.currentTarget)
-  console.log(data)
+  console.log(JSON.stringify(data, null, 2))
   // const test = jsonpatch.compare(template, data)
   // template = data
   // console.log(JSON.stringify(data, null, 2))
