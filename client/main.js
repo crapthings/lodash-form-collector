@@ -21,6 +21,13 @@ const onSubmit = evt => {
 const Form = () => <form id="form" onSubmit={onSubmit}>
   <div>
     <label htmlFor="">
+    <div>text: String</div>
+      <textarea name="text" id="" cols="30" rows="10"></textarea>
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
     <div>name: String</div>
       <input type="text" name='name'  />
     </label>
@@ -98,6 +105,10 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
       <span>c: String</span>
       <input type="radio" name='profile.stringRadio' value={'c'} />
     </label>
+  </div>
+
+  <div>
+    <input type="hidden" name='secret' value='hide value' />
   </div>
 
   <div>

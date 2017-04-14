@@ -31,8 +31,8 @@ const form2obj = (form, options) => {
 
     console.log(fieldName)
 
-    if (_.includes(['text'], type)) {
-      value && _.set(test, fieldName, value)
+    if (_.includes(['text', 'textarea', 'email', 'url', 'search', 'hidden'], type)) {
+      value && _.set(test, fieldName, _.trim(value))
     }
 
     if (_.includes(['number'], type)) {
