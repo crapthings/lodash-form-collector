@@ -1,7 +1,5 @@
 import _ from 'lodash'
 
-import { object } from 'dot-object'
-
 const form2obj = (form, options) => {
   const { elements } = form
 
@@ -15,27 +13,37 @@ const form2obj = (form, options) => {
 
   const test = {}
 
-  _.each(_elements, (element, propName) => {
-    if (_.isArrayLikeObject(element)) {
-      _.each(element, ({ value }, idx) => value && _.set(test, `${propName}[${idx}]`, value))
+  _.each(_elements, (node, propName) => {
+    if (_.isArrayLikeObject(node)) {
+      _.each(node, (element, idx) => setValue(element, idx))
     } else {
-      const { name, type, value } = element
-
-      if (_.includes(['text'], type)) {
-        element.value && _.set(test, `${propName}`, element.value)
-      }
-
-      if (_.includes(['number'], type)) {
-        element.value && _.set(test, `${propName}`, parseInt(element.value))
-      }
+      setValue(node)
     }
   })
 
   console.log(test)
 
-}
+  function setValue(element, elementIdx) {
 
-function checkElementType(element) {
+    const { name, type, value, checked } = element
+
+    const fieldName = elementIdx ? `${name}[${elementIdx}]` : name
+
+    if (_.includes(['text'], type)) {
+      value && _.set(test, fieldName, value)
+    }
+
+    if (_.includes(['number'], type)) {
+      value && _.set(test, fieldName, parseInt(value))
+    }
+
+    if (_.includes(['radio'], type) && checked) {
+      value && _.set(test, name, value)
+    }
+
+  }
+
+  return test
 
 }
 
