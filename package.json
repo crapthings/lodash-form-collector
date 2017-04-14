@@ -1,0 +1,16 @@
+{
+  "name": "form-collecting",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "dot-object": "^1.5.4",
+    "fast-json-patch": "^1.1.8",
+    "lodash": "^4.17.4",
+    "meteor-node-stubs": "~0.2.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}

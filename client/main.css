@@ -1,0 +1,7 @@
+form {
+  padding: 32px;
+}
+
+form > div {
+  margin-bottom: 32px;
+}
