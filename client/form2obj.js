@@ -15,19 +15,21 @@ const form2obj = (form, options) => {
 
   _.each(_elements, (node, propName) => {
     if (_.isArrayLikeObject(node)) {
-      _.each(node, (element, idx) => setValue(element, idx))
+      _.each(node, (element, idx) => setValue(element, idx + 1))
     } else {
       setValue(node)
     }
   })
 
-  console.log(test)
+  console.log(JSON.stringify(test, null, 4))
 
   function setValue(element, elementIdx) {
 
     const { name, type, value, checked } = element
 
-    const fieldName = elementIdx ? `${name}[${elementIdx}]` : name
+    const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
+
+    console.log(fieldName)
 
     if (_.includes(['text'], type)) {
       value && _.set(test, fieldName, value)
@@ -39,6 +41,13 @@ const form2obj = (form, options) => {
 
     if (_.includes(['radio'], type) && checked) {
       value && _.set(test, name, value)
+    }
+
+    if (_.includes(['checkbox'], type)) {
+      if (checked) {
+        const existValues = _.defaultTo(_.get(test, name), [])
+        value && _.set(test, name, _.concat(existValues, value))
+      }
     }
 
   }
