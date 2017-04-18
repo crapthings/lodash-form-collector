@@ -68,3 +68,28 @@ console.log(data)
     gender: 'male'
   }
 }
+
+### single checkbox
+------
+
+#### html
+
+```html
+<form id="form">
+  <input type="checkbox" name="useValue" value="check me" />
+  <input type="checkbox" name="unchecked" data-boolean />
+  <input type="checkbox" name="deep.checked" data-boolean checked />
+  <input type="submit" />
+</form>
+```
+
+#### result
+
+```js
+{
+  useValue: 'check me',
+  unchecked: false,
+  deep: {
+    checked: true
+  }
+}
