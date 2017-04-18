@@ -11,7 +11,8 @@ const lfc = require('lodash-form-collector')
 
 ### basic collecting
 
-html```
+html
+```
 <form id="form">
   <input type="text" name="username" />
   <input type="password" name="password" />
@@ -19,7 +20,8 @@ html```
 </form>
 ```
 
-js```
+js
+```
 const form = document.getElementById('form')
 const data = lfc(form)
 console.log(data)
