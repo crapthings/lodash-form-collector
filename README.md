@@ -68,6 +68,7 @@ console.log(data)
     gender: 'male'
   }
 }
+```
 
 ### single checkbox
 ------
@@ -93,3 +94,4 @@ console.log(data)
     checked: true
   }
 }
+```
