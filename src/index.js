@@ -24,8 +24,6 @@ const lfc = (form, options) => {
 
   function setData(element, elementIdx) {
 
-    // console.dir(element)
-
     const {
       name,
       type,

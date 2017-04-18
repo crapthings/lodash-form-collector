@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "build": "babel ./src/lfc.js --out-file ./dist/bundle.js --source-maps"
+    "build": "babel ./src --out-file ./dist/bundle.js --source-maps"
   },
   "repository": {
     "type": "git",
