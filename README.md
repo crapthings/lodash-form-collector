@@ -1,6 +1,10 @@
+# lodash-form-collector
+
 ## installation
 
 > npm i -S lodash-form-collector
+
+#### import
 
 ```js
 import lfc from 'lodash-form-collector'
@@ -10,7 +14,6 @@ const lfc = require('lodash-form-collector')
 ## usage
 
 ### basic collecting
-
 
 #### html
 
