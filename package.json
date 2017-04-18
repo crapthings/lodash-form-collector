@@ -1,17 +1,26 @@
 {
-  "name": "form-collecting",
-  "private": true,
-  "scripts": {
-    "start": "meteor run"
+  "name": "lodash-form-collector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lfc.js",
+  "directories": {
+    "example": "examples"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crapthings/lodash-form-collector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crapthings/lodash-form-collector/issues"
+  },
+  "homepage": "https://github.com/crapthings/lodash-form-collector#readme",
   "dependencies": {
-    "babel-runtime": "^6.20.0",
-    "dot-object": "^1.5.4",
-    "fast-json-patch": "^1.1.8",
-    "lodash": "^4.17.4",
-    "meteor-node-stubs": "~0.2.4",
-    "react": "^15.5.4",
-    "react-ace": "^4.2.1",
-    "react-dom": "^15.5.4"
+    "lodash": "^4.17.4"
   }
 }
