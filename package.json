@@ -1,7 +1,7 @@
 {
   "name": "lodash-form-collector",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "a form collector package powered by lodash",
   "main": "lfc.js",
   "directories": {
     "example": "examples"
@@ -13,9 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/crapthings/lodash-form-collector.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["form"],
+  "author": "crapthings",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/crapthings/lodash-form-collector/issues"
   },
