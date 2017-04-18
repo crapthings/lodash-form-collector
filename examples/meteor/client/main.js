@@ -1,7 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-import lfc from './lfc'
+import lfc from 'lodash-form-collector'
+
+console.log(lfc)
 
 import jsonpatch from 'fast-json-patch'
 
