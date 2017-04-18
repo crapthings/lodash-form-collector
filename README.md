@@ -77,7 +77,8 @@ console.log(data)
 
 ```html
 <form id="form">
-  <input type="checkbox" name="useValue" value="check me" />
+  <input type="checkbox" name="useValue" value="check me" checked />
+  <input type="checkbox" name="bypassUnchecked" value="will not collect me" />
   <input type="checkbox" name="unchecked" data-boolean />
   <input type="checkbox" name="deep.checked" data-boolean checked />
   <input type="submit" />
