@@ -36,7 +36,8 @@ const lfc = (form, options) => {
 
     if (_.includes(['number', 'range'], type)) {
       const { step } = element
-      value && _.set(data, fieldName, step ? parseFloat(value) : parseInt(value))
+      const decimal = step ? step.split('.')[1].length : 0
+      value && _.set(data, fieldName, step ? _.round(value, decimal) : parseInt(value))
     }
 
     if (_.includes(['radio'], type) && checked) {
