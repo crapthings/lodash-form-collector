@@ -96,3 +96,13 @@ console.log(data)
   }
 }
 ```
+
+## FAQ
+
+## alternative
+
+[form2js](https://github.com/maxatwork/form2js)
+
+## might be useful
+
+[dot-object](https://github.com/rhalff/dot-object)
