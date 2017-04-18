@@ -24,20 +24,54 @@ const lfc = (form, options) => {
 
   function setData(element, elementIdx) {
 
-    const { name, type, value, checked, disabled, step, dataset } = element
+    // console.dir(element)
+
+    const {
+      name,
+      type,
+      value,
+      checked,
+      disabled,
+      multiple,
+      step,
+      dataset,
+      tagName,
+      parentNode,
+    } = element
+
+    const {
+      number,
+    } = dataset
+
+    const parentNodeAllowMultiple = parentNode.multiple
 
     if (disabled) return
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
-    if (_.includes(['text', 'password', 'textarea', 'email', 'url', 'tel', 'hidden', 'color', 'month', 'week', 'time'], type)) {
+    if (_.includes([
+      'text',
+      'password',
+      'textarea',
+      'email',
+      'url',
+      'tel',
+      'hidden',
+      'color',
+      'month',
+      'week',
+      'time',
+    ], type)) {
       value && _.set(data, fieldName, _.trim(value))
     }
 
     if (_.includes(['number', 'range'], type)) {
       const { step } = element
       const decimal = step ? step.split('.')[1].length : 0
-      value && _.set(data, fieldName, step ? _.round(value, decimal) : parseInt(value))
+      value && _.set(data, fieldName, step
+        ? _.round(value, decimal)
+        : parseInt(value)
+      )
     }
 
     if (_.includes(['radio'], type) && checked) {
@@ -67,13 +101,44 @@ const lfc = (form, options) => {
 
     if (_.includes(['date', 'datetime-local'], type)) {
       const { string } = dataset
-      value && _.set(data, fieldName, string ? new Date(value).toISOString() : new Date(value))
+      value && _.set(data, fieldName, string
+        ? new Date(value).toISOString()
+        : new Date(value)
+      )
+    }
+
+    if ((tagName === 'OPTION' && parentNode.tagName === 'SELECT') && !parentNodeAllowMultiple) {
+      const to = parentNode.dataset.type
+      const _name = parentNode.name
+      const _value = parentNode.value
+      _value && _.set(data, _name, to ? convert({ to, value }) : _.trim(value))
+    }
+
+    if ((tagName === 'OPTION' && parentNode.tagName === 'SELECT') && parentNodeAllowMultiple) {
+      const _value = []
+
+      _.each(parentNode.selectedOptions, option => {
+        _value.push(convert({ to: parentNode.dataset.type, value: option.value }))
+      })
+
+      _.set(data, parentNode.name, _value)
     }
 
   }
 
   return data
 
+}
+
+function convert({ to, value, decimal, separator = ',' }) {
+
+  const type = {
+    number() { return _.round(value, decimal) },
+    string() { return _.trim(value) },
+    array() { return value.join(separator) }
+  }
+
+  return type[to](value)
 }
 
 export default lfc

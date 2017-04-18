@@ -24,6 +24,42 @@ const onSubmit = evt => {
 const Form = () => <form id="form" onSubmit={onSubmit}>
   <div>
     <label htmlFor="">
+    <div>selectTestString</div>
+      <select name="selectTestString">
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>selectTestNumber</div>
+      <select name="selectTestNumber" data-type='number'>
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>selectTestNumberM multiple</div>
+      <select name="selectTestNumberM" data-type='number' multiple>
+        <option value=""></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
     <div>tel</div>
       <input type="tel" name='tel' />
     </label>
