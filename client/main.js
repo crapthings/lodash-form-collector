@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-import form2obj from './form2obj'
+import lfc from './lfc'
 
 import jsonpatch from 'fast-json-patch'
 
@@ -10,7 +10,7 @@ let template = {}
 const onSubmit = evt => {
   evt.preventDefault()
   const result = document.getElementById('result')
-  const data = form2obj(evt.currentTarget)
+  const data = lfc(evt.currentTarget)
   console.log(JSON.stringify(data, null, 4))
   result.innerText = JSON.stringify(data, null, 4)
   // const test = jsonpatch.compare(template, data)
@@ -44,8 +44,16 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
 
   <div>
     <label htmlFor="">
+    <div>testDisabled: String</div>
+    <div>disabled</div>
+      <input type="text" name='testDisabled' defaultValue='disabled field' disabled />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
     <div>name: String</div>
-      <input type="text" name='name'  />
+      <input type="text" name='name' />
     </label>
   </div>
 
@@ -53,6 +61,13 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
     <label htmlFor="">
       <div>age: Number</div>
       <input type="number" name='age' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+      <div>price: Float</div>
+      <input type="number" name='price' step='0.01' />
     </label>
   </div>
 

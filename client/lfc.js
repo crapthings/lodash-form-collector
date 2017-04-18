@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
-const form2obj = (form, options) => {
+const lfc = (form, options) => {
+
   const { elements } = form
 
   const allProperties = _.chain(elements)
@@ -11,49 +12,52 @@ const form2obj = (form, options) => {
 
   const _elements = _.pick(elements, allProperties)
 
-  const test = {}
+  const data = {}
 
   _.each(_elements, (node, propName) => {
     if (_.isArrayLikeObject(node)) {
-      _.each(node, (element, idx) => setValue(element, idx + 1))
+      _.each(node, (element, idx) => setData(element, idx + 1))
     } else {
-      setValue(node)
+      setData(node)
     }
   })
 
-  function setValue(element, elementIdx) {
+  function setData(element, elementIdx) {
 
-    const { name, type, value, checked, dataset } = element
+    const { name, type, value, checked, disabled, step, dataset } = element
+
+    if (disabled) return
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
     if (_.includes(['text', 'textarea', 'email', 'url', 'search', 'hidden'], type)) {
-      value && _.set(test, fieldName, _.trim(value))
+      value && _.set(data, fieldName, _.trim(value))
     }
 
     if (_.includes(['number'], type)) {
-      value && _.set(test, fieldName, parseInt(value))
+      const { step } = element
+      value && _.set(data, fieldName, step ? parseFloat(value) : parseInt(value))
     }
 
     if (_.includes(['radio'], type) && checked) {
-      value && _.set(test, name, value)
+      value && _.set(data, name, value)
     }
 
     if (_.includes(['checkbox'], type) && !elementIdx) {
       _.get(dataset, 'boolean')
-        ? _.set(test, name, checked ? true : false)
-        : (checked && _.set(test, name, value))
+        ? _.set(data, name, checked ? true : false)
+        : (checked && _.set(data, name, value))
     }
 
     if (_.includes(['checkbox'], type) && elementIdx) {
-      const existValues = _.get(test, name)
+      const existValues = _.get(data, name)
       if (_.get(dataset, 'boolean')) {
-        _.set(test, name, checked
+        _.set(data, name, checked
           ? (existValues ? _.concat(existValues, true) : [true])
           : (existValues ? _.concat(existValues, false) : [false])
         )
       } else {
-        checked && _.set(test, name, existValues
+        checked && _.set(data, name, existValues
           ? _.concat(existValues, value)
           : [value]
         )
@@ -62,8 +66,8 @@ const form2obj = (form, options) => {
 
   }
 
-  return test
+  return data
 
 }
 
-export default form2obj
+export default lfc
