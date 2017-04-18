@@ -2,18 +2,20 @@
   "name": "lodash-form-collector",
   "version": "0.0.1",
   "description": "a form collector package powered by lodash",
-  "main": "lfc.js",
+  "main": "./dist/bundle.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node fuse.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crapthings/lodash-form-collector.git"
   },
-  "keywords": ["form"],
+  "keywords": [
+    "form"
+  ],
   "author": "crapthings",
   "license": "MIT",
   "bugs": {
@@ -22,5 +24,12 @@
   "homepage": "https://github.com/crapthings/lodash-form-collector#readme",
   "dependencies": {
     "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "fuse-box": "^1.3.131",
+    "uglify-js": "^2.8.22"
   }
 }
