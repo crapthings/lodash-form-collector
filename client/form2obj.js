@@ -23,7 +23,7 @@ const form2obj = (form, options) => {
 
   function setValue(element, elementIdx) {
 
-    const { name, type, value, checked } = element
+    const { name, type, value, checked, dataset } = element
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
@@ -39,10 +39,24 @@ const form2obj = (form, options) => {
       value && _.set(test, name, value)
     }
 
-    if (_.includes(['checkbox'], type)) {
-      if (checked) {
-        const existValues = _.defaultTo(_.get(test, name), [])
-        value && _.set(test, name, _.concat(existValues, value))
+    if (_.includes(['checkbox'], type) && !elementIdx) {
+      _.get(dataset, 'boolean')
+        ? _.set(test, name, checked ? true : false)
+        : (checked && _.set(test, name, value))
+    }
+
+    if (_.includes(['checkbox'], type) && elementIdx) {
+      const existValues = _.get(test, name)
+      if (_.get(dataset, 'boolean')) {
+        _.set(test, name, checked
+          ? (existValues ? _.concat(existValues, true) : [true])
+          : (existValues ? _.concat(existValues, false) : [false])
+        )
+      } else {
+        checked && _.set(test, name, existValues
+          ? _.concat(existValues, value)
+          : [value]
+        )
       }
     }
 

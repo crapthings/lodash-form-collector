@@ -11,6 +11,7 @@
     "lodash": "^4.17.4",
     "meteor-node-stubs": "~0.2.4",
     "react": "^15.5.4",
+    "react-ace": "^4.2.1",
     "react-dom": "^15.5.4"
   }
 }

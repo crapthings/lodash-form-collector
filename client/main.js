@@ -9,8 +9,10 @@ let template = {}
 
 const onSubmit = evt => {
   evt.preventDefault()
+  const result = document.getElementById('result')
   const data = form2obj(evt.currentTarget)
-  console.log(JSON.stringify(data, null, 2))
+  console.log(JSON.stringify(data, null, 4))
+  result.innerText = JSON.stringify(data, null, 4)
   // const test = jsonpatch.compare(template, data)
   // template = data
   // console.log(JSON.stringify(data, null, 2))
@@ -19,6 +21,20 @@ const onSubmit = evt => {
 }
 
 const Form = () => <form id="form" onSubmit={onSubmit}>
+  <div>
+    <label htmlFor="">
+    <div>scs: String</div>
+      <input type="checkbox" name='scs' value='sc_value' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>scb: Boolean</div>
+      <input type="checkbox" name='scb' data-boolean />
+    </label>
+  </div>
+
   <div>
     <label htmlFor="">
     <div>text: String</div>
@@ -63,52 +79,55 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
 
   <div>
     <label htmlFor="">
-      <span>true: Boolean</span>
+      <div>profile.booleanBox: Boolean</div>
       <input type="checkbox" name='profile.booleanBox' value={'c'} data-boolean />
     </label>
 
     <label htmlFor="">
-      <span>false: Boolean</span>
+      <div>profile.booleanBox: Boolean</div>
       <input type="checkbox" name='profile.booleanBox' value={'a'} data-boolean />
     </label>
   </div>
 
   <div>
     <label htmlFor="">
-      <span>a: Boolean</span>
+      <div>profile.stringBox: a</div>
       <input type="checkbox" name='profile.stringBox' value={'a'} />
     </label>
 
     <label htmlFor="">
-      <span>b: Boolean</span>
+      <div>profile.stringBox: b</div>
       <input type="checkbox" name='profile.stringBox' value={'b'} />
     </label>
 
     <label htmlFor="">
-      <span>c: Boolean</span>
+      <div>profile.stringBox: c</div>
       <input type="checkbox" name='profile.stringBox' value={'c'} />
     </label>
   </div>
 
   <div>
     <label htmlFor="">
-      <span>a: String</span>
+      <div>profile.stringRadio: a</div>
       <input type="radio" name='profile.stringRadio' value={'a'} />
     </label>
 
     <label htmlFor="">
-      <span>b: String</span>
+      <div>profile.stringRadio: b</div>
       <input type="radio" name='profile.stringRadio' value={'b'} />
     </label>
 
     <label htmlFor="">
-      <span>c: String</span>
+      <div>profile.stringRadio: c</div>
       <input type="radio" name='profile.stringRadio' value={'c'} />
     </label>
   </div>
 
   <div>
-    <input type="hidden" name='secret' value='hide value' />
+    <label htmlFor="">
+      <div>secret: hide value</div>
+      <input type="hidden" name='secret' value='hide value' />
+    </label>
   </div>
 
   <div>
@@ -119,6 +138,11 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
 
 Meteor.startup(function () {
   const App = document.createElement('div')
-  render(<Form />, App)
+  render(<div style={{ display: 'flex' }}>
+    <div style={{ flex: 1 }}>
+      <Form />
+    </div>
+    <div id='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>, App)
   document.body.appendChild(App)
 })
