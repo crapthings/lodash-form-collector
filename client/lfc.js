@@ -30,11 +30,11 @@ const lfc = (form, options) => {
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
-    if (_.includes(['text', 'textarea', 'email', 'url', 'search', 'hidden'], type)) {
+    if (_.includes(['text', 'password', 'textarea', 'email', 'url', 'tel', 'hidden', 'color', 'month', 'week', 'time'], type)) {
       value && _.set(data, fieldName, _.trim(value))
     }
 
-    if (_.includes(['number'], type)) {
+    if (_.includes(['number', 'range'], type)) {
       const { step } = element
       value && _.set(data, fieldName, step ? parseFloat(value) : parseInt(value))
     }
@@ -62,6 +62,11 @@ const lfc = (form, options) => {
           : [value]
         )
       }
+    }
+
+    if (_.includes(['date', 'datetime-local'], type)) {
+      const { string } = dataset
+      value && _.set(data, fieldName, string ? new Date(value).toISOString() : new Date(value))
     }
 
   }

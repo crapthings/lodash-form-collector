@@ -11,7 +11,8 @@ const onSubmit = evt => {
   evt.preventDefault()
   const result = document.getElementById('result')
   const data = lfc(evt.currentTarget)
-  console.log(JSON.stringify(data, null, 4))
+  console.log('JSON', JSON.stringify(data, null, 4))
+  console.log('obj', data)
   result.innerText = JSON.stringify(data, null, 4)
   // const test = jsonpatch.compare(template, data)
   // template = data
@@ -21,6 +22,62 @@ const onSubmit = evt => {
 }
 
 const Form = () => <form id="form" onSubmit={onSubmit}>
+  <div>
+    <label htmlFor="">
+    <div>tel</div>
+      <input type="tel" name='tel' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>datetimeTest1</div>
+      <input type="datetime-local" name='datetimeTest1' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>monthTest1</div>
+      <input type="month" name='monthTest1' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>timeTest1</div>
+      <input type="time" name='timeTest1' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>weekTest1</div>
+      <input type="week" name='weekTest1' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>dateTest1 date object</div>
+      <input type="date" name='dateTest1' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>dateTest1 iso string</div>
+      <input type="date" name='dateTest2' data-string />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+    <div>rangeTest1</div>
+      <input type="range" name='rangeTest1' />
+    </label>
+  </div>
+
   <div>
     <label htmlFor="">
     <div>scs: String</div>
@@ -142,6 +199,13 @@ const Form = () => <form id="form" onSubmit={onSubmit}>
     <label htmlFor="">
       <div>secret: hide value</div>
       <input type="hidden" name='secret' value='hide value' />
+    </label>
+  </div>
+
+  <div>
+    <label htmlFor="">
+      <div>color: String</div>
+      <input type="color" name='color' />
     </label>
   </div>
 
