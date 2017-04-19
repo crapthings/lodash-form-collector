@@ -106,3 +106,4 @@ console.log(data)
 ## might be useful
 
 [dot-object](https://github.com/rhalff/dot-object)
+[object-path](https://github.com/mariocasciaro/object-path)
