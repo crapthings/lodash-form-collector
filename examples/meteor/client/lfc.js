@@ -16,8 +16,27 @@ const lfc = (form, options) => {
 
   _.each(nodes, node => {
     _.isArrayLikeObject(node)
-      ? _.each(node, (element, elementIdx) => setData(element, elementIdx + 1))
-      : setData(node)
+      ? _.each(node, trimValue)
+      : trimValue(node)
+  })
+
+  _.each(nodes, node => {
+    if (_.isArrayLikeObject(node))
+      data[nodeName] = []
+  })
+
+  _.each(nodes, (node, nodeName) => {
+    if (_.isArrayLikeObject(node)) {
+      const _node = _.chain(node)
+        .reject('disabled')
+        .reject(({ value }) => _.isEmpty(value))
+        .value()
+
+      _.each(_node, (element, elementIdx) => setData(element, elementIdx + 1))
+    } else {
+      if (node.value)
+        setData(node)
+    }
   })
 
   function setData(element, elementIdx) {
@@ -30,18 +49,16 @@ const lfc = (form, options) => {
       multiple,
       step,
       dataset,
-      disabled,
       parentNode,
       tagName,
     } = element
 
     const {
+      type: dataType,
       number,
     } = dataset
 
     const parentNodeAllowMultiple = parentNode.multiple
-
-    if (disabled) return
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
@@ -58,20 +75,20 @@ const lfc = (form, options) => {
       'week',
       'time',
     ], elementType)) {
-      value && _.set(data, fieldName, _.trim(value))
+      _.set(data, fieldName, value)
     }
 
     if (_.includes(['number', 'range'], elementType)) {
       const { step } = element
       const decimal = step ? step.split('.')[1].length : 0
-      value && _.set(data, fieldName, step
+      _.set(data, fieldName, step
         ? _.round(value, decimal)
         : parseInt(value)
       )
     }
 
     if (_.includes(['radio'], elementType) && checked) {
-      value && _.set(data, name, value)
+      _.set(data, name, value)
     }
 
     if (_.includes(['checkbox'], elementType) && !elementIdx) {
@@ -97,7 +114,7 @@ const lfc = (form, options) => {
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
       const { string } = dataset
-      value && _.set(data, fieldName, string
+      _.set(data, fieldName, string
         ? new Date(value).toISOString()
         : new Date(value)
       )
@@ -124,6 +141,10 @@ const lfc = (form, options) => {
 
   return data
 
+}
+
+function trimValue(element) {
+  element.value = _.trim(element.value)
 }
 
 function convert({ to, value, decimal, separator = ',' }) {

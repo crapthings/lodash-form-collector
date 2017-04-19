@@ -28,7 +28,15 @@ const Form = () => <form onSubmit={onSubmit}>
   </div>
 
   <div>
+    <input type="text" name="text" value='aokse' disabled />
+  </div>
+
+  <div>
     <input type="text" name="text" />
+  </div>
+
+  <div>
+    <input type="text" name="text123" />
   </div>
 
   <div>
