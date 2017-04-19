@@ -53,6 +53,10 @@ console.log(data)
   <input type="number" name="profile.age" value="32" />
   <input type="radio" name="profile.gender" value="male" checked />
   <input type="radio" name="profile.gender" value="female" />
+  <input type="text" name="array[0]" value="string1" />
+  <input type="text" name="array[1]" value="string2" />
+  <input type="text" name="sameName" value="text with same name" />
+  <input type="text" name="sameName" value="will be collect as array" />
   <input type="submit" />
 </form>
 ```
@@ -66,7 +70,9 @@ console.log(data)
     displayName: 'crapthings',
     age: 32,
     gender: 'male'
-  }
+  },
+  array: ['string1', 'string2'],
+  sameName: ['text with same name', 'will be collect as array']
 }
 ```
 
