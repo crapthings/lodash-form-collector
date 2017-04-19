@@ -20,7 +20,7 @@ const lfc = (form, options) => {
       : trimValue(node)
   })
 
-  _.each(nodes, node => {
+  _.each(nodes, (node, nodeName) => {
     if (_.isArrayLikeObject(node))
       data[nodeName] = []
   })
@@ -79,7 +79,6 @@ const lfc = (form, options) => {
     }
 
     if (_.includes(['number', 'range'], elementType)) {
-      const { step } = element
       const decimal = step ? step.split('.')[1].length : 0
       _.set(data, fieldName, step
         ? _.round(value, decimal)
