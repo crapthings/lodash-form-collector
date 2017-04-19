@@ -28,6 +28,11 @@ const Form = () => <form onSubmit={onSubmit}>
   </div>
 
   <div>
+    <input type="radio" name="radio1" value="thaa" />
+    <input type="radio" name="radio1" value="55asd" />
+  </div>
+
+  <div>
     <input type="text" name="text" value='aokse' disabled />
   </div>
 
