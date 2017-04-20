@@ -1,5 +1,7 @@
 # lodash-form-collector
 
+[![NPM](https://nodei.co/npm/lodash-form-collector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/lodash-form-collector/)
+
 ## installation
 
 > npm i -S lodash-form-collector
