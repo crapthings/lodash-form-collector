@@ -24,6 +24,12 @@ const onSubmit = evt => {
 
 const Form = () => <form onSubmit={onSubmit}>
   <div>
+    <input type="checkbox" name="checkbox1" value="boom" data-type-boolean />
+    <input type="checkbox" name="checkbox1" value="what's up" data-type-boolean />
+  </div>
+  <div>
+    <input type="number" name="number1" />
+    <input type="number" name="number2" step="0.01" />
     <input type="text" name="text" />
   </div>
 

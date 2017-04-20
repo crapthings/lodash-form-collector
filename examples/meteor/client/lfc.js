@@ -2,7 +2,10 @@ import _ from 'lodash'
 
 const lfc = (form, options) => {
 
-  const { elements } = form
+  const { elements, tagName: FORM } = form
+
+  if (FORM !== 'FORM')
+    throw new Error('first argument should be a form element')
 
   const properties = _.chain(elements)
     .map('name')
@@ -12,7 +15,7 @@ const lfc = (form, options) => {
 
   const nodes = _.pick(elements, properties)
 
-  const data = {}
+  const data = _.stubObject()
 
   _.each(nodes, node => {
     _.isArrayLikeObject(node)
@@ -21,8 +24,8 @@ const lfc = (form, options) => {
   })
 
   _.each(nodes, (node, nodeName) => {
-    if (_.isArrayLikeObject(node))
-      data[nodeName] = []
+    if (_.isArrayLikeObject(node) && !_.some(node, ['type', 'radio']))
+      _.set(data, nodeName, [])
   })
 
   _.each(nodes, (node, nodeName) => {
@@ -34,8 +37,7 @@ const lfc = (form, options) => {
 
       _.each(_node, (element, elementIdx) => setData(element, elementIdx + 1))
     } else {
-      if (node.value)
-        setData(node)
+      node.value && setData(node)
     }
   })
 
@@ -54,13 +56,14 @@ const lfc = (form, options) => {
     } = element
 
     const {
-      type: dataType,
-      number,
+      typeString,
+      typeBoolean,
     } = dataset
 
     const parentNodeAllowMultiple = parentNode.multiple
 
     const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
+    const propName = elementIdx ? `${name}[${elementIdx - 1}]` : name
 
     if (_.includes([
       'text',
@@ -75,14 +78,13 @@ const lfc = (form, options) => {
       'week',
       'time',
     ], elementType)) {
-      _.set(data, fieldName, value)
+      _.set(data, propName, value)
     }
 
     if (_.includes(['number', 'range'], elementType)) {
-      const decimal = step ? step.split('.')[1].length : 0
-      _.set(data, fieldName, step
-        ? _.round(value, decimal)
-        : parseInt(value)
+      _.set(data, propName, step
+        ? _.round(value, _.chain(step).split('.').last().size())
+        : _.toNumber(value)
       )
     }
 
@@ -91,29 +93,22 @@ const lfc = (form, options) => {
     }
 
     if (_.includes(['checkbox'], elementType) && !elementIdx) {
-      _.get(dataset, 'boolean')
+      typeBoolean
         ? _.set(data, name, checked ? true : false)
         : (checked && _.set(data, name, value))
     }
 
     if (_.includes(['checkbox'], elementType) && elementIdx) {
-      const existValues = _.get(data, name)
-      if (_.get(dataset, 'boolean')) {
-        _.set(data, name, checked
-          ? (existValues ? _.concat(existValues, true) : [true])
-          : (existValues ? _.concat(existValues, false) : [false])
-        )
+      const existValues = _.get(data, name, [])
+      if (typeBoolean) {
+        _.set(data, name, _.concat(existValues, checked ? true : false))
       } else {
-        checked && _.set(data, name, existValues
-          ? _.concat(existValues, value)
-          : [value]
-        )
+        checked && _.set(data, name, _.concat(existValues, value))
       }
     }
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
-      const { string } = dataset
-      _.set(data, fieldName, string
+      _.set(data, fieldName, typeString
         ? new Date(value).toISOString()
         : new Date(value)
       )
