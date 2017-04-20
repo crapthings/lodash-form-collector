@@ -24,11 +24,6 @@ const lfc = (form, options) => {
   })
 
   _.each(nodes, (node, nodeName) => {
-    if (_.isArrayLikeObject(node) && !_.some(node, ['type', 'radio']))
-      _.set(data, nodeName, [])
-  })
-
-  _.each(nodes, (node, nodeName) => {
     if (_.isArrayLikeObject(node)) {
       const _node = _.chain(node)
         .reject('disabled')
@@ -56,14 +51,31 @@ const lfc = (form, options) => {
     } = element
 
     const {
-      typeString,
-      typeBoolean,
+      type: dataType,
     } = dataset
 
-    const parentNodeAllowMultiple = parentNode.multiple
+    const {
+      name: parentName,
+      value: parentValue,
+      multiple: allowMultiple,
+      tagName: parentTagName,
+      dataset: parentDataset,
+      selectedOptions,
+    } = parentNode
 
-    const fieldName = elementIdx ? `${name}[${elementIdx - 1}]` : name
-    const propName = elementIdx ? `${name}[${elementIdx - 1}]` : name
+    const propName = elementIdx ? `${name || parentName}[${elementIdx - 1}]` : name
+
+    const elementTypeIsSelect = (tagName === 'OPTION' && parentTagName === 'SELECT')
+
+    if (
+      elementIdx
+      && !_.get(data, name || parentName)
+      && elementType !== 'radio'
+      && parentTagName !== 'SELECT'
+    ) {
+      _.set(data, name || parentName, [])
+    }
+
 
     if (_.includes([
       'text',
@@ -93,14 +105,14 @@ const lfc = (form, options) => {
     }
 
     if (_.includes(['checkbox'], elementType) && !elementIdx) {
-      typeBoolean
+      _.eq(dataType, 'boolean')
         ? _.set(data, name, checked ? true : false)
         : (checked && _.set(data, name, value))
     }
 
     if (_.includes(['checkbox'], elementType) && elementIdx) {
       const existValues = _.get(data, name, [])
-      if (typeBoolean) {
+      if (_.eq(dataType, 'boolean')) {
         _.set(data, name, _.concat(existValues, checked ? true : false))
       } else {
         checked && _.set(data, name, _.concat(existValues, value))
@@ -108,26 +120,24 @@ const lfc = (form, options) => {
     }
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
-      _.set(data, fieldName, typeString
+      _.set(data, propName, _.eq(dataType, 'string')
         ? new Date(value).toISOString()
         : new Date(value)
       )
     }
 
-    if ((tagName === 'OPTION' && parentNode.tagName === 'SELECT') && !parentNodeAllowMultiple) {
-      const to = parentNode.dataset.type
-      const _name = parentNode.name
-      const _value = parentNode.value
-      _value && _.set(data, _name, to ? convert({ to, value }) : _.trim(value))
+    if (elementTypeIsSelect && parentValue && !allowMultiple) {
+      _.set(data, parentName, parentDataset.type
+        ? convert({ to: parentDataset.type, value: parentValue })
+        : parentValue
+      )
     }
 
-    if ((tagName === 'OPTION' && parentNode.tagName === 'SELECT') && parentNodeAllowMultiple) {
+    if (elementTypeIsSelect && allowMultiple) {
       const _value = []
-
-      _.each(parentNode.selectedOptions, option => {
-        _value.push(convert({ to: parentNode.dataset.type, value: option.value }))
+      _.each(selectedOptions, option => {
+        _value.push(convert({ to: parentDataset.type, value: option.value }))
       })
-
       _.set(data, parentNode.name, _value)
     }
 
@@ -144,9 +154,9 @@ function trimValue(element) {
 function convert({ to, value, decimal, separator = ',' }) {
 
   const dataType = {
+    string() { return value },
     number() { return _.round(value, decimal) },
-    string() { return _.trim(value) },
-    array() { return value.join(separator) }
+    array() { return value.join(separator) },
   }
 
   return dataType[to](value)

@@ -87,7 +87,7 @@ console.log(data)
 > if there's a single checkbox that you want to use String as value, just write your input as normal.
 when it has checked, the value will present at the form result, when unchecked it won't present at result.
 
-> if there's a single checkbox that you want to use as Boolean, give your input an data attr data-type-boolean,
+> if there's a single checkbox that you want to use as Boolean, give your input an data attr data-type="boolean",
 checked = true, unchecked will collect as false.
 
 #### html
@@ -96,8 +96,8 @@ checked = true, unchecked will collect as false.
 <form id="form">
   <input type="checkbox" name="useValue" value="check me" checked />
   <input type="checkbox" name="bypassUnchecked" value="will not collect me" />
-  <input type="checkbox" name="unchecked" data-type-boolean />
-  <input type="checkbox" name="deep.checked" data-type-boolean checked />
+  <input type="checkbox" name="unchecked" data-type="boolean" />
+  <input type="checkbox" name="deep.checked" data-type="boolean" checked />
   <input type="submit" />
 </form>
 ```
