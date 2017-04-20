@@ -52,6 +52,8 @@ const lfc = (form, options) => {
 
     const {
       type: dataType,
+      separator,
+      unique,
     } = dataset
 
     const {
@@ -76,15 +78,32 @@ const lfc = (form, options) => {
       _.set(data, name || parentName, [])
     }
 
-
     if (_.includes([
       'text',
-      'password',
       'textarea',
+    ], elementType)) {
+      const _separator = {
+        text: separator || ',',
+        textarea: separator || '\n',
+      }
+
+      let _value = dataType
+        ? convert({ to: dataType, value, separator: _.get(_separator, elementType) })
+        : value
+
+      if (unique) {
+        _value = _.uniq(_value)
+      }
+
+      _.set(data, propName, _value)
+    }
+
+    if (_.includes([
+      'password',
       'email',
+      'hidden',
       'url',
       'tel',
-      'hidden',
       'color',
       'month',
       'week',
@@ -127,17 +146,28 @@ const lfc = (form, options) => {
     }
 
     if (elementTypeIsSelect && parentValue && !allowMultiple) {
-      _.set(data, parentName, parentDataset.type
-        ? convert({ to: parentDataset.type, value: parentValue })
+      const _type = dataType || parentDataset.type
+      _.set(data, parentName, _type
+        ? convert({ to: _type, value: parentValue })
         : parentValue
       )
     }
 
     if (elementTypeIsSelect && allowMultiple) {
-      const _value = []
+      let _value = []
+
       _.each(selectedOptions, option => {
         _value.push(convert({ to: parentDataset.type, value: option.value }))
       })
+
+      if (parentDataset.flatten) {
+        _value = _.flatten(_value)
+      }
+
+      if (parentDataset.unique) {
+        _value = _.chain(_value).flatten().uniq().value()
+      }
+
       _.set(data, parentNode.name, _value)
     }
 
@@ -155,8 +185,23 @@ function convert({ to, value, decimal, separator = ',' }) {
 
   const dataType = {
     string() { return value },
+
     number() { return _.round(value, decimal) },
-    array() { return value.join(separator) },
+
+    array() {
+      return _.chain(value)
+        .split(separator)
+        .compact()
+        .map(_.trim)
+        .value()
+    },
+
+    "[number]"() {
+      return _.chain(value)
+        .split(separator)
+        .map(item => _.round(item, decimal))
+        .value()
+    }
   }
 
   return dataType[to](value)
