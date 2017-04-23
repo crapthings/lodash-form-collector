@@ -118,7 +118,12 @@ checked = true, unchecked will collect as false.
 ------
 
 > you can turn string to number or array by using data-type="number || array || [number]".
-text, textarea, search, hidden, select are supported.
+
+> text, textarea, search, hidden, select are supported.
+
+> [string separator]: text. search, hidden, options of select is ',' and textarea is '\n' by default,
+
+> you can use optional by data-separator="separator".
 
 #### html
 
@@ -128,6 +133,7 @@ text, textarea, search, hidden, select are supported.
   <input type="text" name="textStringToNumber" value="100" data-type="number" />
   <input type="text" name="textStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
   <input type="text" name="textStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
+  <input type="text" name="textStringItemOfArrayToNumberBySpace" value="100 200 300 400 500" data-type="[number]" data-separator=" " />
   <input type="hidden" name="hiddenString" value="100" />
   <input type="hidden" name="hiddenStringToNumber" value="100" data-type="number" />
   <input type="hidden" name="hiddenStringToArray" value="100, 200, 300, 400, 500" data-type="array" />

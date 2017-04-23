@@ -27,6 +27,7 @@ const Form = () => <form action="" onSubmit={onSubmit}>
   <input type="text" name="textStringToNumber" value="100" data-type="number" />
   <input type="text" name="textStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
   <input type="text" name="textStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
+  <input type="text" name="textStringItemOfArrayToNumberBySpace" value="100 200 300 400 500" data-type="[number]" data-separator=" " />
 
   <input type="hidden" name="hiddenString" value="100" />
   <input type="hidden" name="hiddenStringToNumber" value="100" data-type="number" />
