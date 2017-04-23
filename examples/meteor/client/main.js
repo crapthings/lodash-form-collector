@@ -10,31 +10,70 @@ let template = {}
 
 const onSubmit = evt => {
   evt.preventDefault()
-  const result = document.getElementById('result')
+  const result = evt.currentTarget.parentNode.lastChild
+  console.dir(result)
   const data = lfc(evt.currentTarget)
   console.log('JSON', JSON.stringify(data, null, 4))
   console.log('obj', data)
   result.innerText = JSON.stringify(data, null, 4)
-  // const test = jsonpatch.compare(template, data)
-  // template = data
-  // console.log(JSON.stringify(data, null, 2))
-  // console.log(JSON.stringify(test, null, 2))
-  // console.log(+Date.now(), test.length)
 }
 
-const Form = () => <form action="" onSubmit={onSubmit}>
-  <input type="text" name="textString" value="100" />
-  <input type="text" name="textStringToNumber" value="100" data-type="number" />
-  <input type="text" name="textStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
-  <input type="text" name="textStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
-  <input type="text" name="textStringItemOfArrayToNumberBySpace" value="100 200 300 400 500" data-type="[number]" data-separator=" " />
+const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
 
-  <input type="hidden" name="hiddenString" value="100" />
-  <input type="hidden" name="hiddenStringToNumber" value="100" data-type="number" />
-  <input type="hidden" name="hiddenStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
-  <input type="hidden" name="hiddenStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
-  <input type="submit" />
-</form>
+  <div style={{ display: 'flex' }}>
+    <form style={{ flex: 1 }} onSubmit={onSubmit} >
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1" defaultValue='apple' />
+      </div>
+
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1" defaultValue='banana' />
+      </div>
+
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1" defaultValue='orange' />
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+  <div style={{ display: 'flex' }}>
+    <form style={{ flex: 1 }} onSubmit={onSubmit}>
+      <div>
+        <label>username</label>
+        <input type="text" name="username" defaultValue='crapthings' />
+      </div>
+
+      <div>
+        <label>password</label>
+        <input type="password" name="password" defaultValue='password' />
+      </div>
+
+      <div>
+        <label>emails[0]</label>
+        <input type="email" name="emails[0].address" defaultValue='crapthings@gmail.com' />
+      </div>
+
+      <div>
+        <label>emails[1]</label>
+        <input type="email" name="emails[1].address" defaultValue='crapthings@163.com' />
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+</div>
 
 // const Form = () => <form onSubmit={onSubmit}>
 //   <div>
@@ -43,21 +82,26 @@ const Form = () => <form action="" onSubmit={onSubmit}>
 //     <textarea name="testa" id="" cols="30" rows="10" data-type="array"></textarea>
 
 //     <select name="testselect1">
-//       <option value="1, 2, 3, 4" >1</option>
-//       <option value="a, b, c, d" >2</option>
-//       <option value="3, f, a, aaa" >3</option>
+//       <option value="1, 2, 3, 4" >1, 2, 3, 4</option>
+//       <option value="a, b, c, d" >a, b, c, d</option>
+//       <option value="3, f, a, aaa" >3, f, a, aaa</option>
 //     </select>
 
 //     <select name="testselect" data-type="array">
-//       <option value="1, 2, 3, 4" >1</option>
-//       <option value="a, b, c, d" >2</option>
-//       <option value="3, f, a, aaa" >3</option>
+//       <option value="1, 2, 3, 4" >1, 2, 3, 4</option>
+//       <option value="a, b, c, d" >a, b, c, d</option>
+//       <option value="3, f, a, aaa" >3, f, a, aaa</option>
+//     </select>
+
+//     <select name="testselect22" data-type="[number]">
+//       <option value="1, 2, 3, 4" >1, 2, 3, 4</option>
+//       <option value="5, 6, 7, 8" >5, 6, 7, 8</option>
 //     </select>
 
 //     <select name="testselect33" data-type="array" data-flatten data-unique multiple>
-//       <option value="1, 2, 3, 4" >1</option>
-//       <option value="a, b, c, d" >2</option>
-//       <option value="3, f, a, aaa" >3</option>
+//       <option value="1, 2, 3, 4" >1, 2, 3, 4</option>
+//       <option value="a, b, c, d" >a, b, c, d</option>
+//       <option value="3, f, a, aaa" >3, f, a, aaa</option>
 //     </select>
 
 //   </div>
@@ -301,7 +345,7 @@ Meteor.startup(function () {
     <div style={{ flex: 1 }}>
       <Form />
     </div>
-    <div id='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+
   </div>, App)
   document.body.appendChild(App)
 })

@@ -55,6 +55,7 @@ console.log(data)
 <form id="form">
   <input type="text" name="something" value="anything" />
   <input type="text" name="profile.displayName" value="crapthings" />
+  <input type="text" name="profile.address.city" value="harbin" />
   <input type="number" name="profile.age" value="32" />
   <input type="radio" name="profile.gender" value="male" checked />
   <input type="radio" name="profile.gender" value="female" />
@@ -73,6 +74,9 @@ console.log(data)
   something: 'anything',
   profile: {
     displayName: 'crapthings',
+    address: {
+      city: 'harbin'
+    },
     age: 32,
     gender: 'male'
   },
@@ -114,16 +118,49 @@ checked = true, unchecked will collect as false.
 }
 ```
 
+### multiple form controls with same name
+------
+
+> if there're multiple inputs like text that have same name.
+it will be collecting as array, when no values are given, it gives an empty array [].
+
+> if there're multiple checkboxes that you want to use String as value. just write your input as normal.
+when it has checked, the value will present at the form result.
+when all inputs unchecked it will be an empty array [].
+
+#### html
+
+```html
+<form id="form">
+  <input type="text" name="emptyArray" />
+  <input type="text" name="emptyArray" />
+  <input type="email" name="emails" value="crapthings@gmail.com" />
+  <input type="email" name="emails" value="crapthings@163.com" />
+  <input type="checkbox" name="checkbox" value="a" checked />
+  <input type="checkbox" name="checkbox" value="b" checked />
+  <input type="checkbox" name="checkbox" value="c" />
+  <input type="submit" />
+</form>
+```
+
+#### result
+
+```js
+{
+  emptyArray: [],
+  emails: ['crapthings@gmail.com', 'crapthings@163.com'],
+  checkbox: ['a', 'b'],
+}
+```
+
 ### data type conversion
 ------
 
 > you can turn string to number or array by using data-type="number || array || [number]".
-
-> text, textarea, search, hidden, select are supported.
+text, textarea, search, hidden, select are supported.
 
 > [string separator]: text. search, hidden, options of select is ',' and textarea is '\n' by default,
-
-> you can use optional by data-separator="separator".
+you can use optional by data-separator="separator".
 
 #### html
 
@@ -150,6 +187,7 @@ checked = true, unchecked will collect as false.
   "textStringToNumber": 100,
   "textStringToArray": ["100", "200", "300", "400", "500" ],
   "textStringItemOfArrayToNumber": [100, 200, 300, 400, 500],
+  "textStringItemOfArrayToNumberBySpace": [100, 200, 300, 400, 500],
   "hiddenString": "100",
   "hiddenStringToNumber": 100,
   "hiddenStringToArray": ["100", "200", "300", "400", "500"],

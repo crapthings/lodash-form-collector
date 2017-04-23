@@ -1,7 +1,11 @@
 form {
-  padding: 32px;
+  padding: 16px;
 }
 
 form > div {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+}
+
+form > div > label {
+  display: block;
 }

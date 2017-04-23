@@ -25,14 +25,9 @@ const lfc = (form, options) => {
 
   _.each(nodes, (node, nodeName) => {
     if (_.isArrayLikeObject(node)) {
-      const _node = _.chain(node)
-        .reject('disabled')
-        .reject(({ value }) => _.isEmpty(value))
-        .value()
-
-      _.each(_node, (element, elementIdx) => setData(element, elementIdx + 1))
+      _.each(node, (element, elementIdx) => setData(element, elementIdx + 1))
     } else {
-      node.value && setData(node)
+      setData(node)
     }
   })
 
@@ -44,6 +39,7 @@ const lfc = (form, options) => {
       value,
       checked,
       multiple,
+      disabled,
       step,
       dataset,
       parentNode,
@@ -78,6 +74,10 @@ const lfc = (form, options) => {
       _.set(data, name || parentName, [])
     }
 
+    if ((elementIdx && value === '') || disabled) {
+      return
+    }
+
     if (_.includes([
       'text',
       'textarea',
@@ -97,7 +97,9 @@ const lfc = (form, options) => {
         _value = _.uniq(_value)
       }
 
-      _.set(data, propName, _value)
+      elementIdx
+        ? data[name || parentName] = _.concat(data[name || parentName], _value)
+        : _.set(data, propName, _value)
     }
 
     if (_.includes([
@@ -121,7 +123,9 @@ const lfc = (form, options) => {
     }
 
     if (_.includes(['radio'], elementType) && checked) {
-      _.set(data, name, value)
+      _.eq(dataType, 'boolean')
+        ? _.set(data, name, value === "true" ? true : false)
+        : (checked && _.set(data, name, value))
     }
 
     if (_.includes(['checkbox'], elementType) && !elementIdx) {
