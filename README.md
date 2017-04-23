@@ -114,6 +114,43 @@ checked = true, unchecked will collect as false.
 }
 ```
 
+### data type conversion
+------
+
+> you can turn string to number or array by using data-type="number || array || [number]".
+text, textarea, search, hidden, select are supported.
+
+#### html
+
+```html
+<form id="form">
+  <input type="text" name="textString" value="100" />
+  <input type="text" name="textStringToNumber" value="100" data-type="number" />
+  <input type="text" name="textStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
+  <input type="text" name="textStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
+  <input type="hidden" name="hiddenString" value="100" />
+  <input type="hidden" name="hiddenStringToNumber" value="100" data-type="number" />
+  <input type="hidden" name="hiddenStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
+  <input type="hidden" name="hiddenStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
+  <input type="submit" />
+</form>
+```
+
+#### result
+
+```js
+{
+  "textString": "100",
+  "textStringToNumber": 100,
+  "textStringToArray": ["100", "200", "300", "400", "500" ],
+  "textStringItemOfArrayToNumber": [100, 200, 300, 400, 500],
+  "hiddenString": "100",
+  "hiddenStringToNumber": 100,
+  "hiddenStringToArray": ["100", "200", "300", "400", "500"],
+  "hiddenStringItemOfArrayToNumber": [100, 200, 300, 400, 500]
+}
+```
+
 ## FAQ
 
 ## alternative

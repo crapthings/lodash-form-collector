@@ -81,6 +81,8 @@ const lfc = (form, options) => {
     if (_.includes([
       'text',
       'textarea',
+      'search',
+      'hidden',
     ], elementType)) {
       const _separator = {
         text: separator || ',',
@@ -101,7 +103,6 @@ const lfc = (form, options) => {
     if (_.includes([
       'password',
       'email',
-      'hidden',
       'url',
       'tel',
       'color',

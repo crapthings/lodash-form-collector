@@ -1,8 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-import lfc from 'lodash-form-collector'
-// import lfc from './lfc'
+// import lfc from 'lodash-form-collector'
+import lfc from './lfc'
 
 import jsonpatch from 'fast-json-patch'
 
@@ -22,35 +22,48 @@ const onSubmit = evt => {
   // console.log(+Date.now(), test.length)
 }
 
-const Form = () => <form onSubmit={onSubmit}>
-  <div>
-    <input type="text" name="test array" data-type="array" data-unique />
-    <input type="text" name="test array number" data-type="[number]" />
-    <textarea name="testa" id="" cols="30" rows="10" data-type="array"></textarea>
+const Form = () => <form action="" onSubmit={onSubmit}>
+  <input type="text" name="textString" value="100" />
+  <input type="text" name="textStringToNumber" value="100" data-type="number" />
+  <input type="text" name="textStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
+  <input type="text" name="textStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
 
-    <select name="testselect1">
-      <option value="1, 2, 3, 4" >1</option>
-      <option value="a, b, c, d" >2</option>
-      <option value="3, f, a, aaa" >3</option>
-    </select>
-
-    <select name="testselect" data-type="array">
-      <option value="1, 2, 3, 4" >1</option>
-      <option value="a, b, c, d" >2</option>
-      <option value="3, f, a, aaa" >3</option>
-    </select>
-
-    <select name="testselect33" data-type="array" data-flatten data-unique multiple>
-      <option value="1, 2, 3, 4" >1</option>
-      <option value="a, b, c, d" >2</option>
-      <option value="3, f, a, aaa" >3</option>
-    </select>
-
-  </div>
-  <div>
-    <input type="submit"/>
-  </div>
+  <input type="hidden" name="hiddenString" value="100" />
+  <input type="hidden" name="hiddenStringToNumber" value="100" data-type="number" />
+  <input type="hidden" name="hiddenStringToArray" value="100, 200, 300, 400, 500" data-type="array" />
+  <input type="hidden" name="hiddenStringItemOfArrayToNumber" value="100, 200, 300, 400, 500" data-type="[number]" />
+  <input type="submit" />
 </form>
+
+// const Form = () => <form onSubmit={onSubmit}>
+//   <div>
+//     <input type="text" name="test array" data-type="array" data-unique />
+//     <input type="text" name="test array number" data-type="[number]" />
+//     <textarea name="testa" id="" cols="30" rows="10" data-type="array"></textarea>
+
+//     <select name="testselect1">
+//       <option value="1, 2, 3, 4" >1</option>
+//       <option value="a, b, c, d" >2</option>
+//       <option value="3, f, a, aaa" >3</option>
+//     </select>
+
+//     <select name="testselect" data-type="array">
+//       <option value="1, 2, 3, 4" >1</option>
+//       <option value="a, b, c, d" >2</option>
+//       <option value="3, f, a, aaa" >3</option>
+//     </select>
+
+//     <select name="testselect33" data-type="array" data-flatten data-unique multiple>
+//       <option value="1, 2, 3, 4" >1</option>
+//       <option value="a, b, c, d" >2</option>
+//       <option value="3, f, a, aaa" >3</option>
+//     </select>
+
+//   </div>
+//   <div>
+//     <input type="submit"/>
+//   </div>
+// </form>
 
 // const Form = () => <form id="form" onSubmit={onSubmit}>
 //   <div>
