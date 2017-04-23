@@ -195,6 +195,11 @@ you can use optional by data-separator="separator".
 }
 ```
 
+## TODOS
+
+- [ ] add feature data-type='object || [object]' ?
+- [ ] file to base64
+
 ## FAQ
 
 ## alternative
