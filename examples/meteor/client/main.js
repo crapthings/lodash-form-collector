@@ -24,17 +24,17 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
     <form style={{ flex: 1 }} onSubmit={onSubmit} >
       <div>
         <label>text1</label>
-        <input type="text" name="text1" defaultValue='apple' />
+        <input type="text" name="text1.a" defaultValue='apple' />
       </div>
 
       <div>
         <label>text1</label>
-        <input type="text" name="text1" defaultValue='banana' />
+        <input type="text" name="text1.a" defaultValue='banana' />
       </div>
 
       <div>
         <label>text1</label>
-        <input type="text" name="text1" defaultValue='orange' />
+        <input type="text" name="text1.a" defaultValue='orange' />
       </div>
 
       <div>
@@ -58,12 +58,12 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
 
       <div>
         <label>emails[0]</label>
-        <input type="email" name="emails[0].address" defaultValue='crapthings@gmail.com' />
+        <input type="email" name="emails.address" defaultValue='crapthings@gmail.com' />
       </div>
 
       <div>
         <label>emails[1]</label>
-        <input type="email" name="emails[1].address" defaultValue='crapthings@163.com' />
+        <input type="email" name="emails.address" defaultValue='crapthings@163.com' />
       </div>
 
       <div>

@@ -97,9 +97,7 @@ const lfc = (form, options) => {
         _value = _.uniq(_value)
       }
 
-      elementIdx
-        ? data[name || parentName] = _.concat(data[name || parentName], _value)
-        : _.set(data, propName, _value)
+      _.set(data, propName, _value)
     }
 
     if (_.includes([
