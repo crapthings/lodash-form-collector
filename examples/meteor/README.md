@@ -1,5 +1,3 @@
-### test locally
+### demo
 
-```
-meteor npm link ../../
-```
+[demo](https://meteor-njccsympez.now.sh/)

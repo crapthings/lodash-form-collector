@@ -54,13 +54,28 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
       </div>
 
       <div>
-        <label>emails[0]</label>
+        <label>emails.address</label>
         <input type="email" name="emails.address" defaultValue='crapthings@gmail.com' />
       </div>
 
       <div>
-        <label>emails[1]</label>
+        <label>emails.address</label>
         <input type="email" name="emails.address" defaultValue='crapthings@163.com' />
+      </div>
+
+      <div>
+        <label>emails.address</label>
+        <input type="email" name="emails.address" defaultValue='crapthings@163.com' />
+      </div>
+
+      <div>
+        <label>list.string</label>
+        <input type="text" name="list.string" defaultValue='a, b, c' data-type='array' />
+      </div>
+
+      <div>
+        <label>list.number</label>
+        <input type="text" name="list.number" defaultValue='1, 2, 3' data-type='[number]' />
       </div>
 
       <div>
@@ -178,17 +193,17 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
     <form style={{ flex: 1 }} onSubmit={onSubmit} >
       <div>
         <label>text1</label>
-        <input type="text" name="text1[].a" defaultValue='apple' />
+        <input type="text" name="text1.a" defaultValue='apple' />
       </div>
 
       <div>
         <label>text1</label>
-        <input type="text" name="text1[].a" defaultValue='banana' />
+        <input type="text" name="text1.a" defaultValue='banana' />
       </div>
 
       <div>
         <label>text1</label>
-        <input type="text" name="text1[].a" defaultValue='orange' />
+        <input type="text" name="text1.a" defaultValue='orange' />
       </div>
 
       <div>
@@ -201,12 +216,30 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
   <div style={{ display: 'flex' }}>
     <form style={{ flex: 1 }} onSubmit={onSubmit} >
       <div>
-        <label>text1</label>
-        <select name="testSelect">
+        <label>test1</label>
+        <select name="test1">
           <option value="">select one</option>
           <option value="a">a</option>
           <option value="b">b</option>
           <option value="c">c</option>
+        </select>
+      </div>
+
+      <div>
+        <label>test2</label>
+        <select name="test2" data-type='array'>
+          <option value="">select one</option>
+          <option value="a, b, c">a, b, c</option>
+          <option value="d, e, f">d, e, f</option>
+        </select>
+      </div>
+
+      <div>
+        <label>test3</label>
+        <select name="test3" data-type='[number]'>
+          <option value="">select one</option>
+          <option value="1, 2, 3">1, 2, 3</option>
+          <option value="3, 4, 5">3, 4, 5</option>
         </select>
       </div>
 
@@ -485,11 +518,16 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
 
 Meteor.startup(function () {
   const App = document.createElement('div')
-  render(<div style={{ display: 'flex' }}>
-    <div style={{ flex: 1 }}>
-      <Form />
+  render(<div>
+    <h1>lodash form collector</h1>
+    <a href="https://github.com/crapthings/lodash-form-collector">github</a>
+    <span style={{ padding: '0 8px' }}>|</span>
+    <a href="https://github.com/crapthings/lodash-form-collector/blob/master/examples/meteor/client/main.js">example src</a>
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <Form />
+      </div>
     </div>
-
   </div>, App)
   document.body.appendChild(App)
 })

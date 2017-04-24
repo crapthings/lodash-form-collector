@@ -2,6 +2,8 @@
 
 [![NPM](https://nodei.co/npm/lodash-form-collector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/lodash-form-collector/)
 
+[demo](https://meteor-njccsympez.now.sh/)
+
 ## installation
 
 > npm i -S lodash-form-collector

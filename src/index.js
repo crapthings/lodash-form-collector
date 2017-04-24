@@ -25,18 +25,15 @@ const lfc = (form, options) => {
 
   _.each(nodes, (node, nodeName) => {
     if (_.isArrayLikeObject(node)) {
-      const _node = _.chain(node)
-        .reject('disabled')
-        .reject(({ value }) => _.isEmpty(value))
-        .value()
-
-      _.each(_node, (element, elementIdx) => setData(element, elementIdx + 1))
+      _.each(node, setValue)
     } else {
-      node.value && setData(node)
+      setValue(node)
     }
   })
 
-  function setData(element, elementIdx) {
+  function setValue(element, elementIdx) {
+
+    const hasMany = elementIdx >= 0
 
     const {
       type: elementType,
@@ -44,6 +41,7 @@ const lfc = (form, options) => {
       value,
       checked,
       multiple,
+      disabled,
       step,
       dataset,
       parentNode,
@@ -54,6 +52,7 @@ const lfc = (form, options) => {
       type: dataType,
       separator,
       unique,
+      skip,
     } = dataset
 
     const {
@@ -65,12 +64,10 @@ const lfc = (form, options) => {
       selectedOptions,
     } = parentNode
 
-    const propName = elementIdx ? `${name || parentName}[${elementIdx - 1}]` : name
-
     const elementTypeIsSelect = (tagName === 'OPTION' && parentTagName === 'SELECT')
 
     if (
-      elementIdx
+      hasMany
       && !_.get(data, name || parentName)
       && elementType !== 'radio'
       && parentTagName !== 'SELECT'
@@ -78,97 +75,118 @@ const lfc = (form, options) => {
       _.set(data, name || parentName, [])
     }
 
+    if ((hasMany && value === "") || disabled || skip) {
+      return
+    }
+
     if (_.includes([
+      'hidden',
       'text',
+      'search',
       'textarea',
     ], elementType)) {
-      const _separator = {
-        text: separator || ',',
-        textarea: separator || '\n',
-      }
-
       let _value = dataType
-        ? convert({ to: dataType, value, separator: _.get(_separator, elementType) })
+        ? convert({ to: dataType, value, elementType })
         : value
 
       if (unique) {
         _value = _.uniq(_value)
       }
 
-      _.set(data, propName, _value)
+      hasMany
+        ? _.set(data, name, _.concat(_.get(data, name, []), _value))
+        : _value && _.set(data, name, _value)
     }
 
     if (_.includes([
-      'password',
-      'email',
-      'hidden',
-      'url',
       'tel',
+      'url',
+      'email',
+      'password',
+      'time',
       'color',
+
       'month',
       'week',
-      'time',
     ], elementType)) {
-      _.set(data, propName, value)
+      hasMany
+        ? _.set(data, name, _.concat(_.get(data, name, []), value))
+        : value && _.set(data, name, value)
     }
 
     if (_.includes(['number', 'range'], elementType)) {
-      _.set(data, propName, step
+      _.set(data, name, step
         ? _.round(value, _.chain(step).split('.').last().size())
         : _.toNumber(value)
       )
     }
 
     if (_.includes(['radio'], elementType) && checked) {
-      _.set(data, name, value)
+      _.eq(dataType, 'boolean')
+        ? _.set(data, name, value === 'true' ? true : false)
+        : _.set(data, name, dataType
+            ? convert({ to: dataType, value})
+            : value
+          )
     }
 
-    if (_.includes(['checkbox'], elementType) && !elementIdx) {
+    if (_.includes(['checkbox'], elementType) && !hasMany) {
       _.eq(dataType, 'boolean')
         ? _.set(data, name, checked ? true : false)
-        : (checked && _.set(data, name, value))
+        : (checked && _.set(data, name, dataType
+            ? convert({ to: dataType, value})
+            : value)
+          )
     }
 
-    if (_.includes(['checkbox'], elementType) && elementIdx) {
+    if (_.includes(['checkbox'], elementType) && hasMany) {
       const existValues = _.get(data, name, [])
-      if (_.eq(dataType, 'boolean')) {
-        _.set(data, name, _.concat(existValues, checked ? true : false))
-      } else {
-        checked && _.set(data, name, _.concat(existValues, value))
-      }
+      _.eq(dataType, 'boolean')
+        ? _.set(data, name, _.concat(existValues, checked ? true : false))
+        : checked && _.set(data, name, _.concat(existValues, dataType
+            ? convert({ to: dataType, value})
+            : value
+          ))
     }
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
-      _.set(data, propName, _.eq(dataType, 'string')
+      _.set(data, name, _.eq(dataType, 'string')
         ? new Date(value).toISOString()
         : new Date(value)
       )
     }
 
-    if (elementTypeIsSelect && parentValue && !allowMultiple) {
+    if (
+      elementTypeIsSelect
+      && parentValue
+      && !allowMultiple
+    ) {
       const _type = dataType || parentDataset.type
       _.set(data, parentName, _type
-        ? convert({ to: _type, value: parentValue })
+        ? convert({ to: _type, value: parentValue, elementType: 'text' })
         : parentValue
       )
     }
 
-    if (elementTypeIsSelect && allowMultiple) {
-      let _value = []
+    if (
+      elementTypeIsSelect
+      && allowMultiple
+    ) {
+      let _values = []
 
       _.each(selectedOptions, option => {
-        _value.push(convert({ to: parentDataset.type, value: option.value }))
+        _values.push(convert({ to: parentDataset.type, value: option.value, elementType: 'text' }))
       })
 
       if (parentDataset.flatten) {
-        _value = _.flatten(_value)
+        _values = _.flatten(_values)
       }
 
       if (parentDataset.unique) {
-        _value = _.chain(_value).flatten().uniq().value()
+        _values = _.chain(_values).flatten().uniq().value()
       }
 
-      _.set(data, parentNode.name, _value)
+      _.set(data, parentNode.name, _values)
     }
 
   }
@@ -181,7 +199,18 @@ function trimValue(element) {
   element.value = _.trim(element.value)
 }
 
-function convert({ to, value, decimal, separator = ',' }) {
+function convert({
+  to,
+  value,
+  decimal,
+  separator,
+  elementType,
+}) {
+
+  const _separator = {
+    text: ',',
+    textarea: '\n',
+  }
 
   const dataType = {
     string() { return value },
@@ -190,7 +219,7 @@ function convert({ to, value, decimal, separator = ',' }) {
 
     array() {
       return _.chain(value)
-        .split(separator)
+        .split(separator || _separator[elementType])
         .compact()
         .map(_.trim)
         .value()
@@ -198,13 +227,14 @@ function convert({ to, value, decimal, separator = ',' }) {
 
     "[number]"() {
       return _.chain(value)
-        .split(separator)
+        .split(separator || _separator[elementType])
         .map(item => _.round(item, decimal))
         .value()
     }
   }
 
   return dataType[to](value)
+
 }
 
 export default lfc
