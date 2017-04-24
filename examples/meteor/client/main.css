@@ -9,3 +9,10 @@ form > div {
 form > div > label {
   display: block;
 }
+
+[type="submit"] {
+  outline: 0;
+  border: 0;
+  background-color: green;
+  color: white;
+}

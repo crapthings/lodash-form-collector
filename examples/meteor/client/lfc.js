@@ -25,13 +25,13 @@ const lfc = (form, options) => {
 
   _.each(nodes, (node, nodeName) => {
     if (_.isArrayLikeObject(node)) {
-      _.each(node, (element, elementIdx) => setData(element, elementIdx + 1))
+      _.each(node, (element, elementIdx) => setValue(element, elementIdx + 1))
     } else {
-      setData(node)
+      setValue(node)
     }
   })
 
-  function setData(element, elementIdx) {
+  function setValue(element, elementIdx) {
 
     const {
       type: elementType,
@@ -50,6 +50,7 @@ const lfc = (form, options) => {
       type: dataType,
       separator,
       unique,
+      skip,
     } = dataset
 
     const {
@@ -74,7 +75,7 @@ const lfc = (form, options) => {
       _.set(data, name || parentName, [])
     }
 
-    if ((elementIdx && value === '') || disabled) {
+    if ((elementIdx && value === '') || disabled || skip) {
       return
     }
 
@@ -122,23 +123,30 @@ const lfc = (form, options) => {
 
     if (_.includes(['radio'], elementType) && checked) {
       _.eq(dataType, 'boolean')
-        ? _.set(data, name, value === "true" ? true : false)
-        : (checked && _.set(data, name, value))
+        ? _.set(data, name, value === 'true' ? true : false)
+        : _.set(data, name, dataType
+            ? convert({ to: dataType, value})
+            : value
+          )
     }
 
     if (_.includes(['checkbox'], elementType) && !elementIdx) {
       _.eq(dataType, 'boolean')
         ? _.set(data, name, checked ? true : false)
-        : (checked && _.set(data, name, value))
+        : (checked && _.set(data, name, dataType
+            ? convert({ to: dataType, value})
+            : value)
+          )
     }
 
     if (_.includes(['checkbox'], elementType) && elementIdx) {
       const existValues = _.get(data, name, [])
-      if (_.eq(dataType, 'boolean')) {
-        _.set(data, name, _.concat(existValues, checked ? true : false))
-      } else {
-        checked && _.set(data, name, _.concat(existValues, value))
-      }
+      _.eq(dataType, 'boolean')
+        ? _.set(data, name, _.concat(existValues, checked ? true : false))
+        : checked && _.set(data, name, _.concat(existValues, dataType
+            ? convert({ to: dataType, value})
+            : value
+          ))
     }
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
@@ -148,7 +156,11 @@ const lfc = (form, options) => {
       )
     }
 
-    if (elementTypeIsSelect && parentValue && !allowMultiple) {
+    if (
+      elementTypeIsSelect
+      && parentValue
+      && !allowMultiple
+    ) {
       const _type = dataType || parentDataset.type
       _.set(data, parentName, _type
         ? convert({ to: _type, value: parentValue })
@@ -156,22 +168,25 @@ const lfc = (form, options) => {
       )
     }
 
-    if (elementTypeIsSelect && allowMultiple) {
-      let _value = []
+    if (
+      elementTypeIsSelect
+      && allowMultiple
+    ) {
+      let _values = []
 
       _.each(selectedOptions, option => {
-        _value.push(convert({ to: parentDataset.type, value: option.value }))
+        _values.push(convert({ to: parentDataset.type, value: option.value }))
       })
 
       if (parentDataset.flatten) {
-        _value = _.flatten(_value)
+        _values = _.flatten(_values)
       }
 
       if (parentDataset.unique) {
-        _value = _.chain(_value).flatten().uniq().value()
+        _values = _.chain(_values).flatten().uniq().value()
       }
 
-      _.set(data, parentNode.name, _value)
+      _.set(data, parentNode.name, _values)
     }
 
   }
@@ -184,7 +199,12 @@ function trimValue(element) {
   element.value = _.trim(element.value)
 }
 
-function convert({ to, value, decimal, separator = ',' }) {
+function convert({
+  to,
+  value,
+  decimal,
+  separator = ',',
+}) {
 
   const dataType = {
     string() { return value },
@@ -208,6 +228,7 @@ function convert({ to, value, decimal, separator = ',' }) {
   }
 
   return dataType[to](value)
+
 }
 
 export default lfc

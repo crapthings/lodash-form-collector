@@ -21,30 +21,6 @@ const onSubmit = evt => {
 const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
 
   <div style={{ display: 'flex' }}>
-    <form style={{ flex: 1 }} onSubmit={onSubmit} >
-      <div>
-        <label>text1</label>
-        <input type="text" name="text1.a" defaultValue='apple' />
-      </div>
-
-      <div>
-        <label>text1</label>
-        <input type="text" name="text1.a" defaultValue='banana' />
-      </div>
-
-      <div>
-        <label>text1</label>
-        <input type="text" name="text1.a" defaultValue='orange' />
-      </div>
-
-      <div>
-        <input type="submit" />
-      </div>
-    </form>
-    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
-  </div>
-
-  <div style={{ display: 'flex' }}>
     <form style={{ flex: 1 }} onSubmit={onSubmit}>
       <div>
         <label>username</label>
@@ -57,6 +33,27 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
       </div>
 
       <div>
+        <label>isDisabled</label>
+        <input type="checkbox" name="isDisabled" data-type="boolean" />
+      </div>
+
+      <div>
+        <label htmlFor="">profile.gender</label>
+        <label>
+          <input type="radio" name="profile.gender" defaultValue='male' defaultChecked /> male
+        </label>
+
+        <label>
+          <input type="radio" name="profile.gender" defaultValue='female' /> female
+        </label>
+      </div>
+
+      <div>
+        <label>profile.age</label>
+        <input type="number" name="profile.age" defaultValue='32' />
+      </div>
+
+      <div>
         <label>emails[0]</label>
         <input type="email" name="emails.address" defaultValue='crapthings@gmail.com' />
       </div>
@@ -64,6 +61,153 @@ const Form = () => <div style={{ display: 'flex', flexFlow: 'column' }}>
       <div>
         <label>emails[1]</label>
         <input type="email" name="emails.address" defaultValue='crapthings@163.com' />
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+  <h3>radio</h3>
+  <div style={{ display: 'flex' }}>
+
+    <form style={{ flex: 1 }} onSubmit={onSubmit} >
+      <div>
+        <label htmlFor="">profile.gender</label>
+        <label>
+          <input type="radio" name="profile.gender" defaultValue='male' /> male
+        </label>
+
+        <label>
+          <input type="radio" name="profile.gender" defaultValue='female' /> female
+        </label>
+
+        <label>
+          <input type="radio" name="profile.gender" defaultValue='not specified' /> not specified
+        </label>
+
+        <label>
+          <input type="radio" name="profile.gender" data-skip /> by using data-skip, u can unset this field
+        </label>
+      </div>
+
+      <div>
+        <label htmlFor="">profile.color</label>
+        <label>
+          <input type="radio" name="profile.color" defaultValue='red' defaultChecked /> red
+        </label>
+
+        <label>
+          <input type="radio" name="profile.color" defaultValue='yellow' /> yellow
+        </label>
+
+        <label>
+          <input type="radio" name="profile.color" defaultValue='blue' /> blue
+        </label>
+      </div>
+
+      <div>
+        <label htmlFor="">profile.isDisabled</label>
+        <label>
+          <input type="radio" name="profile.isDisabled" defaultValue='true' data-type="boolean" /> true
+        </label>
+
+        <label>
+          <input type="radio" name="profile.isDisabled" defaultValue='false' data-type="boolean" defaultChecked /> false
+        </label>
+      </div>
+
+      <div>
+        <label htmlFor="">profile.number</label>
+        <label>
+          <input type="radio" name="profile.number" value="1" data-type="number" /> 1
+        </label>
+
+        <label>
+          <input type="radio" name="profile.number" value="2" data-type="number" /> 2
+        </label>
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+   <h3>checkbox</h3>
+  <div style={{ display: 'flex' }}>
+
+    <form style={{ flex: 1 }} onSubmit={onSubmit} >
+      <div>
+        <label htmlFor="">profile.color</label>
+        <label>
+          <input type="checkbox" name="profile.color" value='red' /> red
+        </label>
+
+        <label>
+          <input type="checkbox" name="profile.color" value='yellow' /> yellow
+        </label>
+
+        <label>
+          <input type="checkbox" name="profile.color" value='blue' /> blue
+        </label>
+      </div>
+
+      <div>
+        <label htmlFor="">profile.number</label>
+        <label>
+          <input type="checkbox" name="profile.number" value="1" data-type="number" /> 1
+        </label>
+
+        <label>
+          <input type="checkbox" name="profile.number" value="2" data-type="number" /> 2
+        </label>
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+  <div style={{ display: 'flex' }}>
+    <form style={{ flex: 1 }} onSubmit={onSubmit} >
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1[].a" defaultValue='apple' />
+      </div>
+
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1[].a" defaultValue='banana' />
+      </div>
+
+      <div>
+        <label>text1</label>
+        <input type="text" name="text1[].a" defaultValue='orange' />
+      </div>
+
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+    <div className='result' style={{ flex: 1, whiteSpace: 'pre' }}></div>
+  </div>
+
+  <div style={{ display: 'flex' }}>
+    <form style={{ flex: 1 }} onSubmit={onSubmit} >
+      <div>
+        <label>text1</label>
+        <select name="testSelect">
+          <option value="">select one</option>
+          <option value="a">a</option>
+          <option value="b">b</option>
+          <option value="c">c</option>
+        </select>
       </div>
 
       <div>
