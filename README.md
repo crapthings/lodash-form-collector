@@ -207,6 +207,7 @@ you can use optional by data-separator="separator".
 ## alternative
 
 [form2js](https://github.com/maxatwork/form2js)
+[jQuery Serialize Object](https://github.com/macek/jquery-serialize-object)
 
 ## might be useful
 
