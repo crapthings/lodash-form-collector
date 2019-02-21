@@ -23,6 +23,28 @@ const data = lfc(form)
 console.log(data)
 ```
 
+## changelog
+
+#### 0.0.4
+
+> if you don't specify 'data-type' on input[type='checkbox'], the default data-type is set to 'boolean'. this change allow you to collect value as 'true' or 'false' as default.
+
+[HTML: Checkbox default value ](https://stackoverflow.com/questions/12911787/html-checkbox-default-value)
+
+```
+### >= 0.0.4
+<input type='checkbox' name='isEnabled' checked />
+{ isEnable: true }
+<input type='checkbox' name='isEnabled' />
+{ isEnable: false }
+
+### < 0.0.4
+<input type='checkbox' name='isEnabled' checked />
+{ isEnable: 'on' }
+<input type='checkbox' name='isEnabled' />
+{}
+```
+
 ### basic collecting
 ------
 

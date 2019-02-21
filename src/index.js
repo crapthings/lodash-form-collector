@@ -130,23 +130,12 @@ const lfc = (form, options) => {
           )
     }
 
-    if (_.includes(['checkbox'], elementType) && !hasMany) {
-      _.eq(dataType, 'boolean')
-        ? _.set(data, name, checked ? true : false)
-        : (checked && _.set(data, name, dataType
-            ? convert({ to: dataType, value})
-            : value)
-          )
-    }
-
-    if (_.includes(['checkbox'], elementType) && hasMany) {
-      const existValues = _.get(data, name, [])
-      _.eq(dataType, 'boolean')
-        ? _.set(data, name, _.concat(existValues, checked ? true : false))
-        : checked && _.set(data, name, _.concat(existValues, dataType
-            ? convert({ to: dataType, value})
-            : value
-          ))
+    if (_.includes(['checkbox'], elementType)) {
+      const to = dataType || 'boolean'
+      _.set(data, name, hasMany
+        ? _.concat(_.get(data, name, []), convert({ to, value, checked }))
+        : convert({ to, value, checked })
+      )
     }
 
     if (_.includes(['date', 'datetime-local'], elementType)) {
@@ -202,6 +191,7 @@ function trimValue(element) {
 function convert({
   to,
   value,
+  checked,
   decimal,
   separator,
   elementType,
@@ -213,6 +203,14 @@ function convert({
   }
 
   const dataType = {
+    boolean() {
+      if (value === 'on') {
+        return checked ? true : false
+      } else {
+        if (checked) return value
+      }
+    },
+
     string() { return value },
 
     number() { return _.round(value, decimal) },
@@ -225,7 +223,7 @@ function convert({
         .value()
     },
 
-    "[number]"() {
+    '[number]'() {
       return _.chain(value)
         .split(separator || _separator[elementType])
         .map(item => _.round(item, decimal))

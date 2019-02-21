@@ -1,6 +1,6 @@
 {
   "name": "lodash-form-collector",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a form collector package powered by lodash",
   "main": "dist/bundle.js",
   "directories": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/crapthings/lodash-form-collector#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
